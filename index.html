@@ -6826,7 +6826,9 @@ tabindex="-1"
   .sx-strip-item{aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:0}
 
   @media (max-width:900px){
-    .sx-features-grid{grid-template-columns:repeat(2,1fr)}
+    .sx-features-grid{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:14px;padding:4px 24px 18px;margin:32px -28px 0}
+    .sx-features-grid::-webkit-scrollbar{display:none}
+    .sx-features-grid .sx-feature{flex:0 0 60%;scroll-snap-align:start;background:#fff;border:1px solid #eee}
     .sx-cat-grid,.sx-prod-grid,.sx-factory-grid{grid-template-columns:repeat(2,1fr)}
     .sx-process-grid{grid-template-columns:repeat(2,1fr)}
     .sx-cert-row{grid-template-columns:repeat(3,1fr)}
