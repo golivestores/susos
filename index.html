@@ -6854,7 +6854,7 @@ tabindex="-1"
 <!-- =============== NWS Clone Sections =============== -->
 <style>
   .nws-clone *,.nws-clone *::before,.nws-clone *::after{box-sizing:border-box}
-  .nws-clone{font-family:"Inter","Helvetica Neue",-apple-system,Arial,sans-serif;color:#1a1a1a;line-height:1.55;background:#fff;font-weight:400}
+  .nws-clone{font-family:"Inter","Helvetica Neue",-apple-system,Arial,sans-serif;color:#1a1a1a;line-height:1.55;background:#fff;font-weight:400;overflow-x:hidden}
   .nws-clone img{max-width:100%;height:auto;display:block}
   .nws-clone a{color:inherit;text-decoration:none}
   .nws-c{max-width:1590px;margin:0 auto;padding:0 28px}
@@ -6981,9 +6981,9 @@ tabindex="-1"
     .susx-mobile-flow::-webkit-scrollbar{display:none}
     .susx-mflow-card{flex:0 0 80%;scroll-snap-align:center}
 
-    .susx-fs .susx-photos-3x2{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:14px;padding:0 24px;margin:0 -28px}
-    .susx-fs .susx-photos-3x2::-webkit-scrollbar{display:none}
-    .susx-fs .susx-photos-3x2 .susx-photo{flex:0 0 80%;scroll-snap-align:start}
+    .susx-fs .susx-photos-3x2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0;margin:0}
+    .susx-fs .susx-photos-3x2 .susx-photo{aspect-ratio:1/1}
+    .susx-fs .susx-photos-3x2 > .susx-photo:nth-child(3){grid-column:1 / -1;aspect-ratio:16/10}
   }
 
   /* FACTORY STRENGTH + 120+ COUNTRIES */
