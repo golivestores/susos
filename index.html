@@ -6911,8 +6911,10 @@ tabindex="-1"
   @media (max-width:780px){
     .nws-hero-image{height:380px}
     .nws-hero-overlap{margin-top:-260px}
-    .nws-overlap-grid{grid-template-columns:repeat(2,1fr)}
-    .nws-showroom{grid-column:1 / span 2}
+    .nws-overlap-grid{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:14px;padding:8px 24px 18px;margin:0 -28px;align-items:stretch}
+    .nws-overlap-grid::-webkit-scrollbar{display:none}
+    .nws-overlap-grid > .nws-cat{flex:0 0 44%;scroll-snap-align:start;min-height:170px}
+    .nws-overlap-grid > .nws-showroom{flex:0 0 80%;grid-column:auto;grid-row:auto;scroll-snap-align:start}
   }
 
   /* CERTIFICATIONS — horizontal marquee */
