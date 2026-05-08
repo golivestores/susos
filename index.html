@@ -6981,9 +6981,9 @@ tabindex="-1"
     .susx-mobile-flow::-webkit-scrollbar{display:none}
     .susx-mflow-card{flex:0 0 80%;scroll-snap-align:center}
 
-    .susx-fs .susx-photos-3x2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0;margin:0}
-    .susx-fs .susx-photos-3x2 .susx-photo{aspect-ratio:1/1}
-    .susx-fs .susx-photos-3x2 > .susx-photo:nth-child(3){grid-column:1 / -1;aspect-ratio:16/10}
+    .susx-fs .susx-photos-3x2{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10px !important;padding:0 !important;margin:0 !important;overflow:visible !important}
+    .susx-fs .susx-photos-3x2 .susx-photo{aspect-ratio:4/3 !important;flex:none !important;scroll-snap-align:none !important}
+    .susx-fs .susx-photos-3x2 > .susx-photo:nth-child(3){grid-column:1 / -1 !important;aspect-ratio:5/3 !important;margin-top:6px}
   }
 
   /* FACTORY STRENGTH + 120+ COUNTRIES */
