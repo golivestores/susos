@@ -6831,7 +6831,10 @@ tabindex="-1"
     .sx-features-grid .sx-feature{flex:0 0 60%;scroll-snap-align:start;background:#fff;border:1px solid #eee}
     .sx-cat-grid,.sx-prod-grid,.sx-factory-grid{grid-template-columns:repeat(2,1fr)}
     .sx-process-grid{grid-template-columns:repeat(2,1fr)}
-    .sx-cert-row{grid-template-columns:repeat(3,1fr)}
+    .sx-cert-row{grid-template-columns:repeat(6,1fr);gap:16px}
+    .sx-cert-row > .sx-cert{grid-column:span 2}
+    .sx-cert-row > .sx-cert:nth-child(4){grid-column:2 / span 2}
+    .sx-cert-row > .sx-cert:nth-child(5){grid-column:4 / span 2}
     .sx-banner{height:auto;flex-direction:column;align-items:stretch}
     .sx-banner-content{max-width:100%;padding:32px 24px}
     .sx-banner-img{position:relative;width:100%;height:200px}
