@@ -7005,7 +7005,12 @@ tabindex="-1"
   .nws-post-link{margin-top:auto;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#26728e;display:inline-flex;align-items:center;gap:6px}
   .nws-post-link::after{content:"→";transition:transform .2s}
   .nws-post:hover .nws-post-link::after{transform:translateX(4px)}
-  @media (max-width:880px){.nws-posts-grid{grid-template-columns:1fr}}
+  @media (max-width:880px){
+    .nws-posts-grid{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:16px;padding:4px 24px 18px;margin:0 -28px}
+    .nws-posts-grid::-webkit-scrollbar{display:none}
+    .nws-posts-grid .nws-post{flex:0 0 82%;scroll-snap-align:start}
+    .nws-posts-grid .nws-post:last-child{margin-right:24px}
+  }
 
   /* INFO COLUMNS + SOCIAL */
   .nws-info{padding:88px 0 64px;background:#f4f6f8}
