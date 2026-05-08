@@ -6966,18 +6966,20 @@ tabindex="-1"
   .susx-sep{flex:0 0 auto;color:#bdc7cd;font-size:22px;font-weight:600;line-height:1;margin-top:1px;align-self:flex-start;padding-top:0}
   .susx-photos-3x2{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%}
   .susx-photo{aspect-ratio:16/10;background-size:cover;background-position:center;border-radius:0;box-shadow:0 6px 18px rgba(20,20,20,.16)}
+
+  /* Mobile-only carousel: each card = dot + label + photo */
+  .susx-mobile-flow{display:none}
+  .susx-mflow-card{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .susx-mflow-dot{display:block;width:13px;height:13px;border-radius:50%;background:#1a1a1a;box-shadow:0 0 0 4px #f7f5f0;margin:0 0 14px}
+  .susx-mflow-label{font-size:12px;font-weight:700;color:#1f4f4a;letter-spacing:.1em;text-transform:uppercase;margin:0 0 16px;line-height:1.4}
+  .susx-mflow-photo{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;box-shadow:0 6px 18px rgba(20,20,20,.16)}
+
   @media (max-width:980px){
-    .susx-process .susx-steps{display:flex;flex-wrap:nowrap;gap:0;justify-content:space-between;padding:0 24px;margin:0 0 28px}
-    .susx-process .susx-steps::before{left:30px;right:30px}
-    .susx-process .susx-step{min-width:0;cursor:pointer}
-    .susx-process .susx-step .susx-label{display:none}
-    .susx-sep{display:none}
-    .susx-process .susx-photos-3x2{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0;padding:0 24px;margin:0 -28px}
-    .susx-process .susx-photos-3x2::-webkit-scrollbar{display:none}
-    .susx-process .susx-photos-3x2 .susx-photo{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/3}
-    .susx-process .susx-step .susx-dot{transition:background .25s,transform .25s}
-    .susx-process .susx-step.is-active .susx-dot{background:#1a1a1a;transform:scale(1.35)}
-    .susx-process .susx-step.is-active .susx-label{display:block;font-size:10px;color:#1a1a1a;margin-top:8px;position:absolute;top:18px;left:50%;transform:translateX(-50%);white-space:nowrap}
+    .susx-process .susx-steps{display:none}
+    .susx-process .susx-photos-3x2{display:none}
+    .susx-mobile-flow{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:24px;padding:8px 24px 18px;margin:0 -28px}
+    .susx-mobile-flow::-webkit-scrollbar{display:none}
+    .susx-mflow-card{flex:0 0 80%;scroll-snap-align:center}
 
     .susx-fs .susx-photos-3x2{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:14px;padding:0 24px;margin:0 -28px}
     .susx-fs .susx-photos-3x2::-webkit-scrollbar{display:none}
@@ -7329,6 +7331,16 @@ tabindex="-1"
         <div class="susx-photo" style="background-image:url('assets/scenes/scene-4.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
         <div class="susx-photo" style="background-image:url('assets/scenes/scene-5.webp')" role="img" aria-label="SUSOS family bathroom"></div>
         <div class="susx-photo" style="background-image:url('assets/scenes/scene-6.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
+      </div>
+
+      <!-- Mobile-only: combined dot+label+photo cards in a horizontal carousel -->
+      <div class="susx-mobile-flow" aria-hidden="true">
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Raw Material<br>Selection</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-1.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Precision<br>Machining</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-2.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Surface<br>Treatment</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-3.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Core<br>Assembly</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-4.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Rigorous<br>Inspection</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-5.webp')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Packaging<br>&amp; Outbound</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-6.jpg')"></div></div>
       </div>
     </div>
   </section>
@@ -7801,43 +7813,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 })();
 
-// Production Process: sync active dot with carousel scroll on mobile + click-to-navigate
-(function(){
-  var section = document.querySelector('.susx-process');
-  if (!section) return;
-  var carousel = section.querySelector('.susx-photos-3x2');
-  var photos = section.querySelectorAll('.susx-photo');
-  var steps = section.querySelectorAll('.susx-step');
-  if (!carousel || !photos.length || !steps.length) return;
-
-  function setActive(idx){
-    steps.forEach(function(s,i){ s.classList.toggle('is-active', i===idx); });
-  }
-  // initial
-  setActive(0);
-
-  if ('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      // Find the entry most centered in the carousel
-      var best = null, bestRatio = 0;
-      entries.forEach(function(e){
-        if (e.intersectionRatio > bestRatio){ best = e; bestRatio = e.intersectionRatio; }
-      });
-      if (best && best.isIntersecting){
-        var idx = Array.prototype.indexOf.call(photos, best.target);
-        if (idx >= 0) setActive(idx);
-      }
-    }, { root: carousel, threshold: [0.5, 0.75, 1] });
-    photos.forEach(function(p){ io.observe(p); });
-  }
-
-  steps.forEach(function(step, i){
-    step.addEventListener('click', function(){
-      if (!photos[i]) return;
-      photos[i].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
-    });
-  });
-})();
 </script>
 </div></body>
 </html>
