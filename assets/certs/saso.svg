@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 500" width="360" height="500">
+  <rect width="360" height="500" fill="#fdfdfb"/>
+  <rect x="12" y="12" width="336" height="476" fill="none" stroke="#c9a464" stroke-width="2"/>
+  <rect x="20" y="20" width="320" height="460" fill="none" stroke="#c9a464" stroke-width=".6"/>
+  <!-- SASO emblem -->
+  <g transform="translate(180,118)">
+    <circle r="50" fill="#006c35"/>
+    <!-- Crescent -->
+    <path d="M-22,-2 a22,22 0 1,0 22,-22 a17,17 0 1,1 -22,22 Z" fill="#ffd700"/>
+    <text x="0" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="900" fill="#ffffff" letter-spacing="3">SASO</text>
+  </g>
+  <!-- IECEE small badge -->
+  <g transform="translate(180,196)">
+    <rect x="-44" y="-12" width="88" height="22" rx="2" fill="#003d7a"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="800" fill="#ffffff" letter-spacing="2">IECEE CB</text>
+  </g>
+  <text x="180" y="252" text-anchor="middle" font-family="Georgia, serif" font-size="15" font-weight="700" fill="#1a1a1a" letter-spacing="2">CERTIFICATE OF CONFORMITY</text>
+  <text x="180" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#5a6373" letter-spacing="3">SAUDI STANDARD · IEC SCHEME</text>
+  <g transform="translate(60,304)">
+    <rect width="240" height="1" y="0" fill="#d8d8d8"/>
+    <rect width="240" height="1" y="14" fill="#d8d8d8"/>
+    <rect width="240" height="1" y="28" fill="#d8d8d8"/>
+    <rect width="240" height="1" y="42" fill="#d8d8d8"/>
+    <rect width="180" height="1" y="56" fill="#d8d8d8"/>
+    <rect width="240" height="1" y="80" fill="#d8d8d8"/>
+    <rect width="200" height="1" y="94" fill="#d8d8d8"/>
+  </g>
+  <g transform="translate(60,420)">
+    <text font-family="Georgia, serif" font-size="9" fill="#666" letter-spacing="2">ISSUED BY</text>
+    <text y="14" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#1a1a1a">SASO · IECEE Body</text>
+  </g>
+  <g transform="translate(220,420)">
+    <circle r="22" cx="40" cy="14" fill="none" stroke="#c9a464" stroke-width="1.5"/>
+    <text x="40" y="18" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#c9a464" letter-spacing="1">SEAL</text>
+  </g>
+</svg>
