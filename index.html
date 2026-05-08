@@ -6885,6 +6885,7 @@ tabindex="-1"
   /* Floating cards row over hero image */
   .nws-hero-overlap{position:relative;margin-top:-100px;z-index:5}
   .nws-overlap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) 1.25fr;gap:20px;align-items:stretch}
+  .nws-overlap-cards{display:contents}
   .nws-cat{background:#fff;color:#1a1a1a;padding:24px 18px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;border-radius:0;box-shadow:0 10px 26px rgba(15,30,55,.08);transition:transform .25s,box-shadow .25s,color .25s;min-height:160px}
   .nws-cat:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(15,30,55,.14)}
   .nws-cat-icon{width:52px;height:52px;display:flex;align-items:center;justify-content:center;margin-bottom:0}
@@ -6911,10 +6912,11 @@ tabindex="-1"
   @media (max-width:780px){
     .nws-hero-image{height:380px}
     .nws-hero-overlap{margin-top:-260px}
-    .nws-overlap-grid{display:flex;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:14px;padding:8px 24px 18px;margin:0 -28px;align-items:stretch}
-    .nws-overlap-grid::-webkit-scrollbar{display:none}
-    .nws-overlap-grid > .nws-cat{flex:0 0 44%;scroll-snap-align:start;min-height:170px}
-    .nws-overlap-grid > .nws-showroom{flex:0 0 80%;grid-column:auto;grid-row:auto;scroll-snap-align:start}
+    .nws-overlap-grid{display:flex;flex-direction:column;grid-template-columns:none;gap:18px}
+    .nws-overlap-cards{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:12px;padding:8px 24px 18px;margin:0 -28px}
+    .nws-overlap-cards::-webkit-scrollbar{display:none}
+    .nws-overlap-cards > .nws-cat{flex:0 0 44%;scroll-snap-align:start;aspect-ratio:1/1;min-height:0;padding:18px 12px}
+    .nws-overlap-grid > .nws-showroom{grid-column:auto;grid-row:auto;width:100%}
   }
 
   /* CERTIFICATIONS — horizontal marquee */
@@ -7079,6 +7081,7 @@ tabindex="-1"
 
     <div class="nws-c nws-hero-overlap">
       <div class="nws-overlap-grid">
+        <div class="nws-overlap-cards">
         <a href="#" class="nws-cat">
           <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
             <rect class="nws-ico-main" x="22" y="6" width="6" height="6" rx="1"/>
@@ -7182,6 +7185,7 @@ tabindex="-1"
           </svg></div>
           <div class="nws-cat-name">Bathtubs</div>
         </a>
+        </div><!-- /.nws-overlap-cards -->
 
         <div class="nws-showroom">
           <p>Our Nan'an showroom displays the full SUSOS catalog — brass faucets, smart toilets, stone vanities, freestanding bathtubs and luxury hardware. Whether you are sourcing for a single villa or a hotel project, our team can quote, sample and ship from stock.</p>
