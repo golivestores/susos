@@ -4583,6 +4583,16 @@ first.parentNode.insertBefore(script, first);
     gap: 0;
   }
   @media (max-width: 768px) { .susos-tsig__list { grid-template-columns: 1fr; } }
+
+  /* ---------- Mobile section spacing — unified 48px vertical rhythm ---------- */
+  @media (max-width: 768px) {
+    .susos-trust,
+    .susos-designer,
+    .susos-inquiry,
+    .susos-related {
+      padding: 48px 0;
+    }
+  }
   .susos-tsig__item {
     padding: 28px 24px;
     text-align: center;
@@ -5525,7 +5535,7 @@ first.parentNode.insertBefore(script, first);
     .nws-hero-text .nws-btn{margin:20px 6px 12px}
     .nws-hero-overlap{margin-top:-460px}
     .nws-overlap-grid{display:flex;flex-direction:column;grid-template-columns:none;gap:18px}
-    .nws-overlap-cards{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:12px;padding:48px 40px 18px;margin:0 -28px}
+    .nws-overlap-cards{display:flex;flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:12px;padding:24px 40px 18px;margin:0 -28px}
     .nws-overlap-cards::-webkit-scrollbar{display:none}
     .nws-overlap-cards > .nws-cat{flex:0 0 44%;scroll-snap-align:start;aspect-ratio:1/1;min-height:0;padding:18px 12px}
     .nws-overlap-grid > .nws-showroom{grid-column:auto;grid-row:auto;width:auto;margin:0 16px;padding:28px 22px 24px}
@@ -5677,11 +5687,11 @@ first.parentNode.insertBefore(script, first);
   /* Mobile: tighten vertical spacing across all SUSOS sections (Hero overlap → Latest News) */
   @media (max-width:880px){
     .nws-hero-text{padding:24px 24px 0}
-    .sx-features{padding:40px 0}
+    .sx-features{padding:48px 0}
     .sx-section{padding:24px 0 40px}
     .nws-vendors{padding:40px 0}
-    .nws-about{padding:48px 0 40px;min-height:auto}
-    .susx-process{padding:40px 0 48px}
+    .nws-about{padding:48px 0;min-height:auto;margin-top:0}
+    .susx-process{padding:48px 0}
     .susx-fs{padding:40px 0 48px}
     .nws-posts{padding:40px 0 48px}
     .nws-h2-rule{margin-bottom:24px}
@@ -5691,135 +5701,6 @@ first.parentNode.insertBefore(script, first);
 </style>
 
 <div class="nws-clone">
-
-  <!-- HERO: split white-top + image-bottom with floating cards -->
-  <section class="nws-hero">
-    <div class="nws-hero-text">
-      <h1>SUSOS® — premium bathroom systems engineered in Fujian, trusted in 120+ countries.</h1>
-      <p>From Showers, Faucets and Smart Toilets to Bathtubs, Cabinets, Squatting Pans, Sinks and Hardware — four production bases delivering 200 tonnes of brass-cast craft every month, fully ISO 9001:2015 certified.</p>
-      <a href="#contact" class="nws-btn nws-btn--outline">Partner With Us</a>
-      <a href="#contact" class="nws-btn nws-btn--solid">Browse Catalogs</a>
-    </div>
-
-    <div class="nws-hero-image" aria-hidden="true"></div>
-
-    <div class="nws-c nws-hero-overlap">
-      <div class="nws-overlap-grid">
-        <div class="nws-overlap-cards">
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect class="nws-ico-main" x="22" y="6" width="6" height="6" rx="1"/>
-            <rect class="nws-ico-main" x="36" y="6" width="6" height="6" rx="1"/>
-            <rect class="nws-ico-main" x="28" y="11" width="8" height="6"/>
-            <rect class="nws-ico-main" x="30" y="17" width="4" height="14"/>
-            <path class="nws-ico-main" d="M16 31h32v3c0 4-3 7-7 7H23c-4 0-7-3-7-7v-3z"/>
-            <path class="nws-ico-accent" d="M32 44c-1.5 2.5-3 5-3 7 0 1.7 1.3 3 3 3s3-1.3 3-3c0-2-1.5-4.5-3-7z"/>
-          </svg></div>
-          <div class="nws-cat-name">Faucets &amp;<br>Mixers</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect class="nws-ico-stroke" x="14" y="6" width="22" height="13" rx="2"/>
-            <rect class="nws-ico-accent" x="18" y="10" width="10" height="5" rx="1"/>
-            <path class="nws-ico-main" d="M12 22h26v18c0 5-4 9-9 9H21c-5 0-9-4-9-9V22z"/>
-            <ellipse class="nws-ico-stroke" cx="25" cy="36" rx="8" ry="5" fill="#fff"/>
-            <path class="nws-ico-stroke" d="M22 51v6M28 51v6"/>
-            <rect class="nws-ico-main" x="42" y="22" width="8" height="6" rx="1"/>
-            <rect class="nws-ico-main" x="44" y="28" width="4" height="3"/>
-          </svg></div>
-          <div class="nws-cat-name">Smart Toilets</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect class="nws-ico-main" x="8" y="10" width="48" height="4" rx="1"/>
-            <path class="nws-ico-main" d="M14 14v8c0 4 3 7 7 7h2v-3h-2c-2 0-4-2-4-4v-8h-3z"/>
-            <path class="nws-ico-main" d="M50 14v8c0 4-3 7-7 7h-2v-3h2c2 0 4-2 4-4v-8h3z"/>
-            <rect class="nws-ico-main" x="11" y="14" width="3" height="8"/>
-            <rect class="nws-ico-main" x="50" y="14" width="3" height="8"/>
-            <rect class="nws-ico-main" x="20" y="36" width="24" height="6" rx="1"/>
-            <circle class="nws-ico-accent" cx="26" cy="39" r="1.6"/>
-            <circle class="nws-ico-accent" cx="32" cy="39" r="1.6"/>
-            <circle class="nws-ico-accent" cx="38" cy="39" r="1.6"/>
-            <rect class="nws-ico-main" x="14" y="48" width="36" height="4" rx="1"/>
-          </svg></div>
-          <div class="nws-cat-name">Bathroom Hardware</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <path class="nws-ico-main" d="M30 7c-1.1 0-2 .9-2 2v5h-9c-1.7 0-3 1.3-3 3v3h32v-3c0-1.7-1.3-3-3-3h-9V9c0-1.1-.9-2-2-2h-4z"/>
-            <circle class="nws-ico-main" cx="20" cy="30" r="1.7"/>
-            <circle class="nws-ico-main" cx="28" cy="30" r="1.7"/>
-            <circle class="nws-ico-main" cx="36" cy="30" r="1.7"/>
-            <circle class="nws-ico-main" cx="44" cy="30" r="1.7"/>
-            <path class="nws-ico-main" d="M19 36c-.6 1.6-2 4.6-2 6.4 0 1.4 1.3 2.6 3 2.6s3-1.2 3-2.6c0-1.8-1.4-4.8-2-6.4z"/>
-            <path class="nws-ico-main" d="M27 36c-.6 1.6-2 4.6-2 6.4 0 1.4 1.3 2.6 3 2.6s3-1.2 3-2.6c0-1.8-1.4-4.8-2-6.4z"/>
-            <path class="nws-ico-accent" d="M35 36c-.6 1.6-2 4.6-2 6.4 0 1.4 1.3 2.6 3 2.6s3-1.2 3-2.6c0-1.8-1.4-4.8-2-6.4z"/>
-            <path class="nws-ico-main" d="M43 36c-.6 1.6-2 4.6-2 6.4 0 1.4 1.3 2.6 3 2.6s3-1.2 3-2.6c0-1.8-1.4-4.8-2-6.4z"/>
-          </svg></div>
-          <div class="nws-cat-name">Showers</div>
-        </a>
-
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <ellipse class="nws-ico-stroke" cx="26" cy="34" rx="20" ry="12" fill="#fff"/>
-            <ellipse class="nws-ico-main" cx="26" cy="34" rx="14" ry="7"/>
-            <ellipse class="nws-ico-accent" cx="26" cy="34" rx="5" ry="2.5"/>
-            <path class="nws-ico-stroke" d="M46 34c0-3 1-6 4-7s5-1 8-1"/>
-            <rect class="nws-ico-main" x="56" y="22" width="4" height="6" rx="1"/>
-            <rect class="nws-ico-main" x="6" y="50" width="44" height="3" rx="1"/>
-          </svg></div>
-          <div class="nws-cat-name">Squatting<br>Pans</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <path class="nws-ico-stroke" d="M30 6h4v8c0 2 2 4 4 4h6"/>
-            <circle class="nws-ico-accent" cx="46" cy="18" r="2.5"/>
-            <path class="nws-ico-stroke" d="M44 21v4"/>
-            <path class="nws-ico-main" d="M6 28h52v4c0 8-6 14-14 14H20c-8 0-14-6-14-14v-4z"/>
-            <ellipse class="nws-ico-stroke" cx="32" cy="35" rx="14" ry="5" fill="#fff"/>
-            <circle class="nws-ico-accent" cx="32" cy="35" r="1.8"/>
-            <rect class="nws-ico-main" x="18" y="48" width="3" height="8"/>
-            <rect class="nws-ico-main" x="43" y="48" width="3" height="8"/>
-          </svg></div>
-          <div class="nws-cat-name">Sinks &amp; Basins</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect class="nws-ico-stroke" x="20" y="4" width="24" height="20" rx="1"/>
-            <circle class="nws-ico-stroke" cx="32" cy="14" r="3"/>
-            <circle class="nws-ico-accent" cx="32" cy="14" r="1.4"/>
-            <rect class="nws-ico-main" x="10" y="28" width="44" height="24" rx="2"/>
-            <rect x="14" y="32" width="12" height="16" fill="#fff"/>
-            <rect x="38" y="32" width="12" height="16" fill="#fff"/>
-            <circle class="nws-ico-accent" cx="20" cy="40" r="1.4"/>
-            <circle class="nws-ico-accent" cx="44" cy="40" r="1.4"/>
-            <rect class="nws-ico-main" x="10" y="52" width="44" height="3"/>
-          </svg></div>
-          <div class="nws-cat-name">Bathroom Cabinets</div>
-        </a>
-        <a href="#" class="nws-cat">
-          <div class="nws-cat-icon"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <path class="nws-ico-main" d="M6 30h52v6c0 5-4 9-9 9H15c-5 0-9-4-9-9v-6z"/>
-            <rect class="nws-ico-main" x="6" y="46" width="3" height="9" rx="1"/>
-            <rect class="nws-ico-main" x="55" y="46" width="3" height="9" rx="1"/>
-            <path class="nws-ico-stroke" d="M16 30V18c0-3 2.5-6 6-6h3"/>
-            <circle class="nws-ico-stroke" cx="26" cy="13" r="3.5"/>
-            <circle class="nws-ico-accent" cx="26" cy="13" r="1.6"/>
-            <path class="nws-ico-accent" d="M44 16c-1 2-2.5 4.5-2.5 6.2 0 1.4 1.1 2.6 2.5 2.6s2.5-1.2 2.5-2.6c0-1.7-1.5-4.2-2.5-6.2z"/>
-          </svg></div>
-          <div class="nws-cat-name">Bathtubs</div>
-        </a>
-        </div><!-- /.nws-overlap-cards -->
-
-        <div class="nws-showroom">
-          <p>Our Nan'an showroom displays the full SUSOS catalog — brass faucets, smart toilets, stone vanities, freestanding bathtubs and luxury hardware. Whether you are sourcing for a single villa or a hotel project, our team can quote, sample and ship from stock.</p>
-          <div class="nws-showroom-cta">
-            <a href="#" class="nws-btn nws-btn--solid">Visit Showroom</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ABOUT + STATS -->
   <section class="nws-about">
