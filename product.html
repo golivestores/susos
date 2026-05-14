@@ -5211,38 +5211,37 @@ first.parentNode.insertBefore(script, first);
       });
     });
 
-    // Accordions — single-open (clicking another auto-closes the rest).
-    // Continuously anchor the clicked button's viewport position throughout the
-    // max-height transition so the page doesn't jump as siblings shrink/grow.
-    var ACC_ANCHOR_MS = 420; // a bit longer than the 350ms transition
-    root.querySelectorAll('[data-acc]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var item = btn.closest('.susos-acc__item');
-        if (!item) return;
-        var group = item.parentElement;
-        var wasOpen = item.classList.contains('is-open');
-        var preTop = btn.getBoundingClientRect().top;
+    // Accordions — single-open via event delegation so it works for any
+    // [data-acc] in the page, including FAQ items that live outside the
+    // primary .susos-pdp wrapper.
+    var ACC_ANCHOR_MS = 420;
+    document.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest && e.target.closest('[data-acc]');
+      if (!btn) return;
+      var item = btn.closest('.susos-acc__item');
+      if (!item) return;
+      var group = item.parentElement;
+      var wasOpen = item.classList.contains('is-open');
+      var preTop = btn.getBoundingClientRect().top;
 
-        if (group) {
-          group.querySelectorAll(':scope > .susos-acc__item.is-open').forEach(function (other) {
-            if (other !== item) other.classList.remove('is-open');
-          });
+      if (group) {
+        group.querySelectorAll(':scope > .susos-acc__item.is-open').forEach(function (other) {
+          if (other !== item) other.classList.remove('is-open');
+        });
+      }
+      item.classList.toggle('is-open', !wasOpen);
+
+      var startTime = performance.now();
+      (function tick() {
+        var nowTop = btn.getBoundingClientRect().top;
+        var delta = nowTop - preTop;
+        if (Math.abs(delta) > 0.5) {
+          window.scrollBy(0, delta);
         }
-        item.classList.toggle('is-open', !wasOpen);
-
-        // Re-anchor every frame for the whole transition duration.
-        var startTime = performance.now();
-        (function tick() {
-          var nowTop = btn.getBoundingClientRect().top;
-          var delta = nowTop - preTop;
-          if (Math.abs(delta) > 0.5) {
-            window.scrollBy(0, delta);
-          }
-          if (performance.now() - startTime < ACC_ANCHOR_MS) {
-            requestAnimationFrame(tick);
-          }
-        })();
-      });
+        if (performance.now() - startTime < ACC_ANCHOR_MS) {
+          requestAnimationFrame(tick);
+        }
+      })();
     });
 
     // Mobile reorder: move .susos-specs-inline so it appears AFTER .susos-info
@@ -5553,7 +5552,7 @@ first.parentNode.insertBefore(script, first);
   .nws-cert-card .nws-cert-sub{font-size:11px;color:#9097a3;letter-spacing:.05em;text-transform:uppercase}
 
   /* ABOUT + STATS */
-  .nws-about{padding:56px 0 48px;background:#1a3c4a;color:#fff;position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;justify-content:center;margin-top:80px}
+  .nws-about{padding:56px 0 48px;background:#1a3c4a;color:#fff;position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;justify-content:center;margin-top:0}
   .nws-about::before{content:"";position:absolute;right:-120px;top:-120px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(224,46,46,.18) 0%,transparent 70%);pointer-events:none}
   .nws-about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1}
   .nws-about-text{display:flex;flex-direction:column}
@@ -5587,7 +5586,7 @@ first.parentNode.insertBefore(script, first);
   @media (max-width:880px){.nws-about-grid{grid-template-columns:1fr;gap:40px}.nws-stats{grid-template-columns:repeat(2,1fr);gap:32px 24px}}
 
   /* PRECISION PRODUCTION PROCESS */
-  .susx-process{padding:96px 0 110px;background:#f7f5f0;text-align:center;color:#1f4f4a;position:relative;overflow:hidden}
+  .susx-process{padding:96px 0 60px;background:#f7f5f0;text-align:center;color:#1f4f4a;position:relative;overflow:hidden}
   .susx-process::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.35) 100%);pointer-events:none}
   .susx-process>.nws-c{position:relative;z-index:1}
   .susx-process__title{font-size:clamp(26px,2.6vw,38px);font-weight:800;letter-spacing:.02em;color:#1a1a1a;margin:0;line-height:1.1;text-transform:none}
@@ -5702,41 +5701,6 @@ first.parentNode.insertBefore(script, first);
 
 <div class="nws-clone">
 
-  <!-- ABOUT + STATS -->
-  <section class="nws-about">
-    <div class="nws-c">
-      <div class="nws-about-grid">
-        <div class="nws-about-text">
-          <h2>About SUSOS</h2>
-          <div class="nws-h2-rule"></div>
-          <h3>Where water vitality meets craftsmanship.</h3>
-          <div class="nws-about-desc">
-            <p>SUSOS® is the bathroom brand of <strong>Fujian Tongtong Building Materials Co., Ltd</strong>, headquartered in Nan&rsquo;an — China&rsquo;s renowned &ldquo;Capital of Water Fittings&rdquo;. Our 50-million-RMB group runs four subsidiary companies and a precision plant across Fujian, Guangdong and Anxi, delivering taps, smart toilets, vanities, bathtubs and hardware to 120+ countries — including Thailand&rsquo;s <em>Siam Global House</em> and the United States&rsquo; <em>Home Depot</em>.</p>
-            <p>Every product is engineered with 58#/59# brass and 304 stainless steel cores, finished with our proprietary 10-step polishing and PVD plating process, and certified to <strong>ISO 9001:2015</strong> (Cert. No. 35624Q10017R0M). Brass-casting capacity reaches 200 tonnes per month — built around four pillars: healthy, human-centric, smart and affordable.</p>
-          </div>
-          <button type="button" class="nws-learn-more" data-nws-toggle aria-expanded="false">Learn more <span aria-hidden="true">↓</span></button>
-          <div class="nws-stats" data-nws-stats>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="50">0</span><span class="nws-stat-sx">M¥</span></div><div class="nws-stat-label">Registered Capital</div></div>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="200">0</span><span class="nws-stat-sx">t</span></div><div class="nws-stat-label">Monthly Brass Casting</div></div>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="4">0</span><span class="nws-stat-sx">×</span></div><div class="nws-stat-label">Production Bases</div></div>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="14">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Product Categories</div></div>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="10">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Specialised Catalogs</div></div>
-            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="120">0</span><span class="nws-stat-sx">+</span></div><div class="nws-stat-label">Countries Served</div></div>
-          </div>
-          <a href="#contact" class="nws-btn nws-btn--solid nws-about-cta">Download Company Profile</a>
-        </div>
-        <div class="nws-about-img">
-          <figure class="nws-about-photo nws-about-photo--top">
-            <img src="assets/nws-about.jpg" alt="SUSOS craftsmanship at the production base" loading="lazy">
-          </figure>
-          <figure class="nws-about-photo nws-about-photo--bot">
-            <img src="assets/nws-showroom.webp" alt="SUSOS showroom" loading="lazy">
-          </figure>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- PRECISION PRODUCTION PROCESS -->
   <section class="susx-process">
     <div class="nws-c">
@@ -5775,6 +5739,41 @@ first.parentNode.insertBefore(script, first);
         <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Core<br>Assembly</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-4.jpg')"></div></div>
         <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Rigorous<br>Inspection</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-5.webp')"></div></div>
         <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Packaging<br>&amp; Outbound</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-6.jpg')"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT + STATS -->
+  <section class="nws-about">
+    <div class="nws-c">
+      <div class="nws-about-grid">
+        <div class="nws-about-text">
+          <h2>About SUSOS</h2>
+          <div class="nws-h2-rule"></div>
+          <h3>Where water vitality meets craftsmanship.</h3>
+          <div class="nws-about-desc">
+            <p>SUSOS® is the bathroom brand of <strong>Fujian Tongtong Building Materials Co., Ltd</strong>, headquartered in Nan&rsquo;an — China&rsquo;s renowned &ldquo;Capital of Water Fittings&rdquo;. Our 50-million-RMB group runs four subsidiary companies and a precision plant across Fujian, Guangdong and Anxi, delivering taps, smart toilets, vanities, bathtubs and hardware to 120+ countries — including Thailand&rsquo;s <em>Siam Global House</em> and the United States&rsquo; <em>Home Depot</em>.</p>
+            <p>Every product is engineered with 58#/59# brass and 304 stainless steel cores, finished with our proprietary 10-step polishing and PVD plating process, and certified to <strong>ISO 9001:2015</strong> (Cert. No. 35624Q10017R0M). Brass-casting capacity reaches 200 tonnes per month — built around four pillars: healthy, human-centric, smart and affordable.</p>
+          </div>
+          <button type="button" class="nws-learn-more" data-nws-toggle aria-expanded="false">Learn more <span aria-hidden="true">↓</span></button>
+          <div class="nws-stats" data-nws-stats>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="50">0</span><span class="nws-stat-sx">M¥</span></div><div class="nws-stat-label">Registered Capital</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="200">0</span><span class="nws-stat-sx">t</span></div><div class="nws-stat-label">Monthly Brass Casting</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="4">0</span><span class="nws-stat-sx">×</span></div><div class="nws-stat-label">Production Bases</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="14">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Product Categories</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="10">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Specialised Catalogs</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="120">0</span><span class="nws-stat-sx">+</span></div><div class="nws-stat-label">Countries Served</div></div>
+          </div>
+          <a href="#contact" class="nws-btn nws-btn--solid nws-about-cta">Download Company Profile</a>
+        </div>
+        <div class="nws-about-img">
+          <figure class="nws-about-photo nws-about-photo--top">
+            <img src="assets/nws-about.jpg" alt="SUSOS craftsmanship at the production base" loading="lazy">
+          </figure>
+          <figure class="nws-about-photo nws-about-photo--bot">
+            <img src="assets/nws-showroom.webp" alt="SUSOS showroom" loading="lazy">
+          </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -5823,6 +5822,166 @@ first.parentNode.insertBefore(script, first);
       </div>
     </div>
   </section>
+
+  <!-- FAQ -->
+  <style>
+    .susos-faq { background: var(--pdp-bg-soft); padding: 80px 0; }
+    @media (max-width: 768px) { .susos-faq { padding: 48px 0; } }
+    .susos-faq__inner { max-width: 920px; margin: 0 auto; }
+    .susos-faq__head { margin-bottom: 32px; border-bottom: 1px solid var(--pdp-ink); padding-bottom: 16px; }
+    .susos-faq__eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--pdp-ink-faded);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .susos-faq__title {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--pdp-ink);
+    }
+    /* Override accordion button style inside FAQ — sentence case, larger, more readable */
+    .susos-faq .susos-acc__btn {
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      padding: 22px 0;
+    }
+    @media (max-width: 600px) {
+      .susos-faq .susos-acc__btn { font-size: 14.5px; }
+    }
+    .susos-faq .susos-acc__inner { padding: 0 0 28px; }
+    .susos-faq .susos-acc__inner p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--pdp-ink-soft);
+      margin: 0 0 12px;
+    }
+    .susos-faq .susos-acc__inner p:last-child { margin-bottom: 0; }
+    .susos-faq .susos-acc__inner strong { color: var(--pdp-ink); font-weight: 700; }
+    .susos-faq__foot {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--pdp-line);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--pdp-ink-soft);
+    }
+    .susos-faq__foot a {
+      color: var(--pdp-ink);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 600;
+    }
+    .susos-faq__foot a:hover { color: var(--pdp-primary); }
+  </style>
+  <section class="susos-faq">
+    <div class="susos-pdp__wrap">
+      <div class="susos-faq__inner">
+        <div class="susos-faq__head">
+          <div class="susos-faq__eyebrow">Need to know</div>
+          <h2 class="susos-faq__title">Frequently asked questions</h2>
+        </div>
+
+        <div class="susos-acc">
+
+          <div class="susos-acc__item is-open">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">What is the minimum order quantity for SUSOS smart toilets?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p>MOQ varies by model — from <strong>30 units</strong> for the flagship <strong>S-MLB-S1 Tankless</strong> to <strong>240 units</strong> for the entry-level <strong>S-SW-D90</strong> bidet seat. Most premium models start at 50–100 units. The MOQ shown on each product card is for the first order; reorders can drop by up to 30%.</p>
+                <p>If your project sits below MOQ, we can blend SKUs from the same factory (e.g. smart toilets + matching basins + cabinets) to fill a container.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="susos-acc__item">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">What's the lead time from deposit to FOB Xiamen?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p>Standard production is <strong>30 days</strong> from a 30% T/T deposit. Custom finishes (PVD plating, color matching), OEM packaging or destination-specific certifications typically add 10–15 days.</p>
+                <p>Express slots for committed reorders are available for a 5% premium and cut standard lead time by 7–10 days.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="susos-acc__item">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">Do you offer OEM / ODM and white-label?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p>Yes. We support <strong>logo printing</strong>, <strong>custom retail and bulk packaging</strong>, <strong>firmware customization</strong> (display language, AI voice, branded companion APP), <strong>finish customization</strong> (PVD colors, ceramic glaze) and full bespoke product engineering on the S-MLB platform.</p>
+                <p>NDA + tooling support starts from 500 units; tooling cost is amortized across the first three production runs and refunded once break-even is reached.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="susos-acc__item">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">What certifications do SUSOS smart toilets carry?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p>Every model ships with <strong>ISO 9001:2015</strong> (Cert. No. 35624Q10017R0M), <strong>CE</strong>, <strong>cUPC</strong>, <strong>WaterMark AU</strong>, <strong>RoHS</strong>, and <strong>SASO IECEE</strong> for the Middle East.</p>
+                <p>Region-specific certifications — <strong>NSF, WaterSense, JIS, BSI, CCC, EAC, IECEE-CB</strong> — are available on request. Please confirm your destination market when enquiring so we can plan certification and labelling at the production stage rather than retrofitting later.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="susos-acc__item">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">What's covered by the warranty?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p>All SUSOS smart toilets carry a <strong>2-year</strong> manufacturer warranty against electrical, ceramic and finish defects, with extended <strong>5-year</strong> coverage on the main control board and ceramic body.</p>
+                <p>Every container ships with a <strong>5% spare-parts allocation</strong> (control boards, seat-board hinges, washing nozzles, remotes) so your installers can swap in the field. Out-of-allocation replacement parts ship CIF within 10 business days.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="susos-acc__item">
+            <button class="susos-acc__btn" type="button" data-acc>
+              <span class="susos-acc__sign" aria-hidden="true"></span>
+              <span class="susos-acc__title">What payment, shipping and sampling terms do you accept?</span>
+            </button>
+            <div class="susos-acc__body">
+              <div class="susos-acc__inner">
+                <p><strong>Payment:</strong> 30% T/T deposit, 70% balance against B/L copy. L/C at sight accepted from approved banks. 60-day credit terms available for repeat customers with three+ successful orders.</p>
+                <p><strong>Shipping:</strong> FOB Xiamen by default; CIF and DDP quoted on request. Mixed containers across SUSOS lines (taps, cabinets, bathtubs, hardware) are consolidated from the same factory — 20HQ or 40HQ from Xiamen and Shenzhen ports.</p>
+                <p><strong>Samples:</strong> Sample fee is the FOB price + air freight, fully <strong>refundable</strong> against your first production order. Sample lead time is 7–10 days for stock items, 15–20 days for custom finishes.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="susos-faq__foot">
+          Didn't find your answer? <a href="#contact">Email our project team</a> — we reply within 12 business hours.
+        </p>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <!-- =============== /NWS Clone Sections =============== -->
