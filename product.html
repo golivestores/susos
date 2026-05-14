@@ -3661,17 +3661,9 @@ first.parentNode.insertBefore(script, first);
     padding: 24px 0 80px;
     align-items: flex-start;
   }
-  @media (min-width: 1025px) {
-    .susos-info {
-      position: sticky;
-      top: 100px;
-      align-self: start;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-    .susos-info::-webkit-scrollbar { display: none; width: 0; }
-  }
+  /* Sticky-at-end is wired up in JS: the shorter column gets a computed
+     sticky top so its bottom pins to viewport bottom while the longer
+     column keeps scrolling. See initEndSticky() below. */
   @media (max-width: 1024px) {
     .susos-pdp__main {
       grid-template-columns: minmax(0, 1fr);
@@ -4040,6 +4032,7 @@ first.parentNode.insertBefore(script, first);
     font-family: inherit;
   }
   .susos-cta:hover { background: var(--pdp-primary-dark); }
+  .susos-cta--full { width: 100%; margin: 4px 0 12px; }
   .susos-cta--ghost {
     background: transparent;
     color: var(--pdp-ink);
@@ -4905,22 +4898,8 @@ first.parentNode.insertBefore(script, first);
         </div>
         <div class="susos-price__incoterm">FOB Xiamen · Volume tiers from 200 / 500 / 1000 units</div>
 
-        <a class="susos-info__distr" href="#contact">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 21s-7-7.4-7-12a7 7 0 1 1 14 0c0 4.6-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/>
-          </svg>
-          Find a regional distributor
-        </a>
-
-        <!-- Qty + CTA -->
-        <div class="susos-buy">
-          <div class="susos-qty">
-            <button type="button" data-qty="-1" aria-label="Decrease">−</button>
-            <input type="number" min="50" value="50" step="10" aria-label="Quantity">
-            <button type="button" data-qty="+1" aria-label="Increase">+</button>
-          </div>
-          <button class="susos-cta" type="button">Request Quote</button>
-        </div>
+        <!-- CTA -->
+        <button class="susos-cta susos-cta--full" type="button">Request Quote</button>
         <a class="susos-cta--ghost" href="#downloads">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M12 4v12m0 0-4-4m4 4 4-4M5 20h14"/>
@@ -5242,7 +5221,53 @@ first.parentNode.insertBefore(script, first);
           requestAnimationFrame(tick);
         }
       })();
+      // The accordion change may also re-balance which column is shorter:
+      setTimeout(applyEndSticky, ACC_ANCHOR_MS + 50);
     });
+
+    // ----- Pin the shorter PDP column at viewport bottom -----
+    // Computes a per-column sticky top so the column whose content runs out
+    // first parks at viewport bottom (minus a small margin) and waits for the
+    // other column to finish scrolling.
+    var STICKY_BOTTOM_GUTTER = 24;
+    function applyEndSticky() {
+      var leftCol = document.querySelector('.susos-pdp__main > .susos-gallery-col');
+      var rightCol = document.querySelector('.susos-pdp__main > .susos-info');
+      if (!leftCol || !rightCol) return;
+
+      // Reset
+      [leftCol, rightCol].forEach(function (el) {
+        el.style.position = '';
+        el.style.top = '';
+        el.style.alignSelf = '';
+      });
+
+      // Desktop only — on mobile the layout is single-column.
+      if (!window.matchMedia('(min-width: 1025px)').matches) return;
+
+      var leftH = leftCol.offsetHeight;
+      var rightH = rightCol.offsetHeight;
+      if (Math.abs(leftH - rightH) < 8) return; // basically equal
+
+      var shorter = leftH < rightH ? leftCol : rightCol;
+      var sh = Math.min(leftH, rightH);
+      var vh = window.innerHeight;
+      // top = vh - shorterHeight - gutter. May be negative if shorter > vh,
+      // which is the desired sticky behaviour — element pins so its bottom
+      // sits at vh - gutter while its top scrolls off-screen above.
+      shorter.style.position = 'sticky';
+      shorter.style.top = (vh - sh - STICKY_BOTTOM_GUTTER) + 'px';
+      shorter.style.alignSelf = 'start';
+    }
+
+    window.addEventListener('load', applyEndSticky);
+    window.addEventListener('resize', function () {
+      // debounce minimally
+      clearTimeout(window.__susos_resize_t);
+      window.__susos_resize_t = setTimeout(applyEndSticky, 80);
+    });
+    // run once now in case load already fired
+    applyEndSticky();
 
     // Mobile reorder: move .susos-specs-inline so it appears AFTER .susos-info
     (function initSpecsReorder() {
@@ -5723,22 +5748,22 @@ first.parentNode.insertBefore(script, first);
       </div>
 
       <div class="susx-photos-3x2">
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-1.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-2.jpg')" role="img" aria-label="SUSOS faucet collection"></div>
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-3.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-4.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-5.webp')" role="img" aria-label="SUSOS family bathroom"></div>
-        <div class="susx-photo" style="background-image:url('assets/scenes/scene-6.jpg')" role="img" aria-label="SUSOS bathroom scene"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-1-raw-material.jpg')" role="img" aria-label="Raw material selection"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-2-precision-machining.jpg')" role="img" aria-label="Precision machining"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-3-surface-treatment.jpg')" role="img" aria-label="Surface treatment"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-4-core-assembly.jpg')" role="img" aria-label="Core assembly"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-5-rigorous-inspection.jpg')" role="img" aria-label="Rigorous inspection"></div>
+        <div class="susx-photo" style="background-image:url('assets/process/step-6-packaging-outbound.jpg')" role="img" aria-label="Packaging and outbound"></div>
       </div>
 
       <!-- Mobile-only: combined dot+label+photo cards in a horizontal carousel -->
       <div class="susx-mobile-flow" aria-hidden="true">
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Raw Material<br>Selection</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-1.jpg')"></div></div>
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Precision<br>Machining</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-2.jpg')"></div></div>
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Surface<br>Treatment</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-3.jpg')"></div></div>
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Core<br>Assembly</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-4.jpg')"></div></div>
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Rigorous<br>Inspection</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-5.webp')"></div></div>
-        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Packaging<br>&amp; Outbound</h4><div class="susx-mflow-photo" style="background-image:url('assets/scenes/scene-6.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Raw Material<br>Selection</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-1-raw-material.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Precision<br>Machining</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-2-precision-machining.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Surface<br>Treatment</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-3-surface-treatment.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Core<br>Assembly</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-4-core-assembly.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Rigorous<br>Inspection</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-5-rigorous-inspection.jpg')"></div></div>
+        <div class="susx-mflow-card"><span class="susx-mflow-dot"></span><h4 class="susx-mflow-label">Packaging<br>&amp; Outbound</h4><div class="susx-mflow-photo" style="background-image:url('assets/process/step-6-packaging-outbound.jpg')"></div></div>
       </div>
     </div>
   </section>
