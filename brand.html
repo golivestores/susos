@@ -3604,8 +3604,8 @@ first.parentNode.insertBefore(script, first);
     --b-ink-soft: #555;
     --b-ink-faded: #8a8a8a;
     --b-line: #E5E5E5;
-    --b-bg: #F7F7F5;
-    --b-bg-soft: #FFFFFF;
+    --b-bg: #F6F6F3;
+    --b-bg-soft: #F6F6F3;
     --b-primary: #26728E;
     --b-primary-dark: #1A3C4A;
     --b-accent: #FF580D;
@@ -3621,7 +3621,9 @@ first.parentNode.insertBefore(script, first);
   .susos-brand__wrap { max-width: 1590px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 80px); }
 
   /* ---------- Hero ---------- */
-  .sb-hero { position: relative; height: 88vh; min-height: 560px; overflow: hidden; background: #000; }
+  /* Desktop: hero fills the viewport beneath the company banner + Shopify header so the stack is exactly one screen tall. */
+  .sb-hero { position: relative; height: calc(100vh - var(--sb-stack-offset, 120px)); min-height: 480px; overflow: hidden; background: #000; }
+  @media (max-width: 768px) { .sb-hero { height: 78vh; min-height: 460px; } }
   .sb-hero__media { position: absolute; inset: 0; }
   .sb-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sb-hero__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 100%); }
@@ -3631,18 +3633,17 @@ first.parentNode.insertBefore(script, first);
   .sb-hero__breadcrumb a:hover { opacity: 1; }
   .sb-hero__title { font-size: clamp(38px, 5.6vw, 72px); font-weight: 700; color: #fff; line-height: 1.05; letter-spacing: -0.01em; max-width: 880px; margin: 0; }
   @media (max-width: 768px) {
-    .sb-hero { height: 78vh; min-height: 460px; }
     .sb-hero__title { font-size: 40px; }
   }
 
   /* ---------- Statement (scroll-fill) ---------- */
   .sb-statement { padding: clamp(60px, 8vw, 110px) 0 clamp(48px, 6vw, 80px); background: var(--b-bg); }
-  .sb-statement__inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 80px); }
+  .sb-statement__inner { max-width: 1590px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 80px); }
   .sb-statement__headline { font-size: clamp(20px, 2.4vw, 30px); line-height: 1.45; font-weight: 700; letter-spacing: -0.005em; margin: 0; color: #cfd5d8; }
   .sb-statement__word { --fill: 0%; display: inline-block; background: linear-gradient(90deg, var(--b-primary-dark) 0%, var(--b-primary-dark) var(--fill), #cfd5d8 var(--fill), #cfd5d8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 
   /* ---------- Gallery marquee ---------- */
-  .sb-gallery { padding: 16px 0 56px; overflow: hidden; background: var(--b-bg); }
+  .sb-gallery { padding: 16px 0 clamp(72px, 8vw, 120px); overflow: hidden; background: var(--b-bg); }
   .sb-gallery__marquee { overflow: hidden; }
   .sb-gallery__track { display: flex; align-items: flex-start; width: max-content; animation: sbGalleryScroll 60s linear infinite; }
   .sb-gallery__marquee:hover .sb-gallery__track { animation-play-state: paused; }
@@ -3663,7 +3664,11 @@ first.parentNode.insertBefore(script, first);
   }
 
   /* ---------- Case study (2-column) ---------- */
-  .sb-study { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; min-height: 78vh; }
+  /* Stack wrapper: lets second study scroll over the first via position:sticky */
+  .sb-study-stack { position: relative; }
+  .sb-study--sticky { position: sticky; top: 0; height: 100vh; z-index: 0; }
+  .sb-study--cover { position: relative; z-index: 1; }
+  .sb-study { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; min-height: 78vh; background: var(--b-primary-dark); }
   .sb-study--reverse .sb-study__media { order: 2; }
   .sb-study__media { position: relative; overflow: hidden; min-height: 60vh; }
   .sb-study__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -3680,84 +3685,112 @@ first.parentNode.insertBefore(script, first);
 
   /* ---------- Banner moment ---------- */
   .sb-banner { position: relative; width: 100%; height: 70vh; min-height: 480px; overflow: hidden; }
+  /* Hero variant — fills exactly one viewport beneath company banner + header */
+  .sb-banner--hero { height: calc(100vh - var(--sb-stack-offset, 120px)); min-height: 480px; }
+  @media (max-width: 768px) { .sb-banner--hero { height: 78vh; min-height: 460px; } }
   .sb-banner__media { position: absolute; inset: 0; }
-  .sb-banner__media img { width: 100%; height: 100%; object-fit: cover; }
-  .sb-banner__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.45) 100%); }
+  .sb-banner__media img,
+  .sb-banner__media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sb-banner__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.45) 100%); z-index: 1; }
   .sb-banner__intro { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 24px; z-index: 2; }
-  .sb-banner__text { font-size: clamp(28px, 4.2vw, 56px); font-weight: 700; color: #fff; line-height: 1.12; letter-spacing: -0.01em; margin: 0; max-width: 980px; text-shadow: 0 2px 24px rgba(0,0,0,0.4); animation: sbBannerFade 1.4s ease-out both; }
+  .sb-banner__inner { max-width: 980px; animation: sbBannerFade 1.4s ease-out both; }
+  .sb-banner__text { font-size: clamp(28px, 4.2vw, 56px); font-weight: 700; color: #fff; line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 18px; text-shadow: 0 2px 24px rgba(0,0,0,0.4); }
+  .sb-banner__sub { font-size: clamp(14px, 1.4vw, 18px); font-weight: 400; color: rgba(255,255,255,0.92); line-height: 1.55; max-width: 760px; margin: 0 auto; text-shadow: 0 2px 18px rgba(0,0,0,0.4); }
   @keyframes sbBannerFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ---------- Pillars ---------- */
-  .sb-pillars-section { padding: clamp(72px, 9vw, 130px) 0; background: var(--b-bg); text-align: center; }
-  .sb-section__eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--b-primary); font-weight: 700; margin: 0 0 14px; }
-  .sb-section__title { font-size: clamp(28px, 3.6vw, 42px); font-weight: 700; line-height: 1.18; color: var(--b-ink); letter-spacing: -0.01em; margin: 0 0 14px; }
-  .sb-section__sub { font-size: 15px; line-height: 1.7; color: var(--b-ink-soft); max-width: 640px; margin: 0 auto; font-weight: 400; }
-  .sb-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; margin-top: 64px; }
-  .sb-pillar { text-align: center; }
-  .sb-pillar__divider { width: 36px; height: 1px; background: var(--b-primary); margin: 0 auto 26px; }
-  .sb-pillar__title { font-size: 22px; font-weight: 700; color: var(--b-ink); margin: 0 0 14px; line-height: 1.25; }
-  .sb-pillar__body { font-size: 14px; color: var(--b-ink-soft); line-height: 1.85; max-width: 340px; margin: 0 auto; }
-  @media (max-width: 900px) {
-    .sb-pillars { display: flex; gap: 16px; margin-top: 40px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 0 0 8px; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; scrollbar-width: none; }
-    .sb-pillars::-webkit-scrollbar { display: none; }
-    .sb-pillar { flex: 0 0 80%; max-width: 80%; min-width: 80%; scroll-snap-align: start; }
+  /* ---------- Homepage sections (vendors marquee + about + factory strength) ---------- */
+  .nws-c { max-width: 1590px; margin: 0 auto; padding: 0 28px; }
+  .nws-h2 { font-size: clamp(26px,2.6vw,38px); font-weight: 800; letter-spacing: .02em; text-align: center; margin: 0 0 10px; color: #1a1a1a; text-transform: none; line-height: 1.1; }
+  .nws-h2-rule { width: 64px; height: 3px; background: #1f4f4a; margin: 0 auto 38px; }
+  .nws-h2-sub { text-align: center; font-size: 16px; color: #5a6373; margin: -22px 0 36px; }
+  .nws-btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 32px; font-weight: 700; font-size: 15px; letter-spacing: .02em; transition: all .2s; cursor: pointer; border: 2px solid #26728e; border-radius: 4px; text-decoration: none; }
+  .nws-btn--solid { background: #26728e; color: #fff; }
+  .nws-btn--solid:hover { background: #4c90aa; border-color: #4c90aa; transform: translateY(-1px); }
+
+  /* Certifications marquee */
+  .nws-vendors { padding: 48px 0 24px; background: #F6F6F3; overflow: hidden; }
+  .nws-marquee { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); mask-image: linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent); }
+  .nws-marquee-track { display: flex; gap: 24px; width: max-content; animation: nwsMarquee 35s linear infinite; }
+  @keyframes nwsMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .nws-logo-card { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; min-width: 140px; height: 80px; padding: 0 26px; }
+  .nws-logo-card img { max-height: 38px; max-width: 100%; width: auto; height: auto; display: block; object-fit: contain; }
+
+  /* About + stats */
+  .nws-about { padding: 56px 0 48px; background: #1a3c4a; color: #fff; position: relative; overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+  .nws-about::before { content: ""; position: absolute; right: -120px; top: -120px; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(224,46,46,.18) 0%, transparent 70%); pointer-events: none; }
+  .nws-about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+  .nws-about-text { display: flex; flex-direction: column; }
+  .nws-about-cta { align-self: flex-start; margin-top: 64px; }
+  .nws-about h2 { font-size: clamp(26px,2.6vw,38px); font-weight: 800; letter-spacing: .02em; color: #fff; text-transform: none; margin: 0 0 4px; line-height: 1.1; }
+  .nws-about .nws-h2-rule { margin: 0 0 18px; }
+  .nws-about h3 { font-size: clamp(18px,1.7vw,22px); font-weight: 600; color: #fff; margin: 0 0 14px; line-height: 1.3; }
+  .nws-about p { font-size: 15px; line-height: 1.6; margin: 0 0 18px; opacity: .9; }
+  .nws-about-img { position: relative; display: block; padding: 10px 30px 40px 10px; }
+  .nws-about-photo { position: relative; width: 80%; margin: 0; }
+  .nws-about-photo--top { margin: 0 auto 0 0; }
+  .nws-about-photo--bot { margin: -72px 0 0 auto; }
+  .nws-about-photo img { width: 100%; display: block; aspect-ratio: 16/11; object-fit: cover; position: relative; z-index: 2; box-shadow: 0 22px 44px rgba(0,0,0,.35); }
+  .nws-about-photo::before { content: ""; position: absolute; background: rgba(255,255,255,.08); z-index: 1; pointer-events: none; }
+  .nws-about-photo--top::before { top: 28px; right: -28px; bottom: -28px; left: 28px; }
+  .nws-about-photo--bot::before { top: 28px; right: 28px; bottom: -28px; left: -28px; }
+  .nws-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px 20px; margin-top: 36px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.12); position: relative; z-index: 1; }
+  .nws-stat { text-align: left; }
+  .nws-stat-num { font-size: clamp(28px,2.6vw,36px); font-weight: 700; color: #fff; letter-spacing: -.01em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .nws-stat-num .nws-stat-sx { color: #fff; }
+  .nws-stat-label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-top: 8px; opacity: .75; color: #fff; }
+  @media (max-width: 880px) {
+    .nws-about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .nws-stats { grid-template-columns: repeat(2,1fr); gap: 32px 24px; }
+    .nws-vendors { padding: 40px 0; }
+    .nws-about { padding: 48px 0 40px; min-height: auto; }
   }
 
-  /* ---------- Edits carousel ---------- */
-  .sb-edits { position: relative; height: 580px; overflow: hidden; background: #000; }
-  .sb-edits__bg { position: absolute; inset: 0; z-index: 0; }
-  .sb-edits__bg-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.15); transition: opacity 1.4s ease, transform 3.2s cubic-bezier(.22,.61,.36,1); }
-  .sb-edits__bg-slide.is-active { opacity: 1; transform: scale(1); }
-  .sb-edits__bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%); }
-  .sb-edits__stage { position: relative; z-index: 2; max-width: 1280px; height: 100%; margin: 0 auto; }
-  .sb-edits__slide { position: absolute; inset: 0; padding: 0 clamp(24px, 4vw, 60px); display: flex; align-items: center; justify-content: center; gap: 0; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
-  .sb-edits__slide.is-active { opacity: 1; pointer-events: auto; }
-  .sb-edits__panel { background: var(--b-primary-dark); color: #fff; padding: 52px 58px; width: 640px; flex-shrink: 0; position: relative; text-align: left; }
-  .sb-edits__panel-eyebrow { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.7); margin: 0 0 16px; }
-  .sb-edits__panel-title { font-size: 36px; font-weight: 700; color: #fff; margin: 0 0 18px; line-height: 1.15; letter-spacing: -0.01em; }
-  .sb-edits__panel-desc { font-size: 15px; line-height: 1.78; color: rgba(255,255,255,0.86); margin: 0 0 34px; }
-  .sb-edits__panel-cta { display: inline-block; padding: 14px 30px; background: #fff; color: var(--b-ink); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; transition: background .25s ease, color .25s ease; }
-  .sb-edits__panel-cta:hover { background: var(--b-primary); color: #fff; }
-  .sb-edits__product { background: #fff; padding: 18px 18px 26px; width: 320px; flex-shrink: 0; text-align: center; box-shadow: 0 14px 44px rgba(0,0,0,0.25); }
-  .sb-edits__product-img { aspect-ratio: 1/1; overflow: hidden; margin-bottom: 14px; background: #f3f1ec; }
-  .sb-edits__product-img img { width: 100%; height: 100%; object-fit: cover; }
-  .sb-edits__product-name { font-size: 15px; font-weight: 700; color: var(--b-ink); margin: 0 0 6px; }
-  .sb-edits__product-meta { font-size: 12px; color: var(--b-ink-faded); margin: 0; letter-spacing: 0.06em; text-transform: uppercase; }
-  .sb-edits__nav { position: absolute; bottom: -56px; right: 28px; display: flex; gap: 10px; z-index: 5; }
-  .sb-edits__nav-btn { width: 38px; height: 38px; border-radius: 50%; background: #fff; color: var(--b-ink); border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 12px rgba(0,0,0,0.18); transition: background .25s, color .25s; }
-  .sb-edits__nav-btn:hover { background: var(--b-primary); color: #fff; }
-  .sb-edits__nav-btn svg { width: 16px; height: 16px; }
-  .sb-edits__progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255,255,255,0.18); }
-  .sb-edits__progress-bar { height: 100%; background: var(--b-primary); width: 0; }
-  @media (min-width: 1280px) { .sb-edits { height: 660px; } }
-  @media (max-width: 1024px) {
-    .sb-edits { height: 660px; }
-    .sb-edits__slide { flex-direction: column; gap: 24px; padding: 0 32px; }
-    .sb-edits__panel { width: 100%; max-width: 460px; padding: 30px 32px; }
-    .sb-edits__product { width: 240px; }
-  }
-  @media (max-width: 768px) {
-    .sb-edits { height: 100svh; min-height: 600px; }
-    .sb-edits__slide { padding: 28px 16px 20px; gap: 16px; }
-    .sb-edits__panel { padding: 28px 22px 32px; }
-    .sb-edits__panel-title { font-size: 26px; }
-    .sb-edits__panel-desc { font-size: 14px; margin-bottom: 20px; }
-    .sb-edits__product { display: flex; align-items: center; gap: 14px; width: 82%; max-width: 320px; padding: 10px 14px 10px 10px; text-align: left; }
-    .sb-edits__product-img { flex: 0 0 72px; width: 72px; height: 72px; margin-bottom: 0; aspect-ratio: 1/1; }
-    .sb-edits__product-name { font-size: 13px; margin-bottom: 2px; line-height: 1.25; }
-    .sb-edits__product-meta { font-size: 11px; }
-    .sb-edits__nav { position: relative; bottom: auto; right: auto; justify-content: center; margin-top: 6px; }
+  /* Factory Strength */
+  .susx-fs { padding: 48px 0 96px; background: #F6F6F3; text-align: center; color: #1f4f4a; position: relative; overflow: hidden; }
+  .susx-fs::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.3) 100%); pointer-events: none; }
+  .susx-fs > .nws-c { position: relative; z-index: 1; }
+  .susx-fs__title { font-size: clamp(26px,2.6vw,38px); font-weight: 800; letter-spacing: .02em; color: #1a1a1a; margin: 0; line-height: 1.1; text-transform: none; }
+  .susx-fs__sub { font-size: 13px; color: #6b7385; letter-spacing: .04em; margin: 14px 0 14px; }
+  .susx-fs__sub b { color: #4c90aa; font-weight: 700; margin: 0 4px; }
+  .susx-fs__header { display: flex; align-items: center; justify-content: center; gap: 40px; margin: 18px 0 28px; flex-wrap: wrap; }
+  .susx-fs__count { display: flex; align-items: baseline; gap: 10px; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+  .susx-fs__count strong { font-size: clamp(34px,3.4vw,52px); font-weight: 700; color: #1f4f4a; line-height: 1; font-family: Georgia,'Times New Roman',serif; letter-spacing: .01em; }
+  .susx-fs__count > span { font-size: clamp(14px,1.3vw,18px); font-weight: 600; color: #1f4f4a; letter-spacing: .14em; text-transform: uppercase; }
+  .susx-fs__flags { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; flex: 0 0 auto; }
+  .susx-flag { display: inline-block; width: 38px; height: 26px; border-radius: 3px; background-size: cover; background-position: center; box-shadow: 0 1px 4px rgba(0,0,0,.12); flex: 0 0 auto; }
+  .susx-flag--jp { background: #fff; position: relative; overflow: hidden; }
+  .susx-flag--jp i { position: absolute; top: 50%; left: 50%; width: 11px; height: 11px; background: #bc002d; border-radius: 50%; transform: translate(-50%,-50%); }
+  .susx-fs__map { position: relative; width: 100%; margin: 10px 0 56px; }
+  .susx-fs__map img { width: 100%; height: auto; display: block; }
+  .susx-photos-3x2 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; width: 100%; }
+  .susx-photo { aspect-ratio: 16/10; background-size: cover; background-position: center; box-shadow: 0 6px 18px rgba(20,20,20,.16); }
+  @media (max-width: 780px) {
+    .susx-fs__header { justify-content: center; }
+    .susx-fs__flags { justify-content: center; gap: 10px; }
+    .susx-flag { width: 30px; height: 20px; }
+    .susx-fs { padding: 40px 0 48px; }
+    .susx-photos-3x2 { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .susx-photos-3x2 > .susx-photo:nth-child(3) { grid-column: 1 / -1; aspect-ratio: 5/3; margin-top: 6px; }
   }
 
   /* ---------- Founder ---------- */
-  .sb-founder { padding: clamp(72px, 9vw, 130px) 0; background: var(--b-bg-soft); }
+  .sb-founder { padding: clamp(56px, 6vw, 90px) 0 clamp(40px, 4vw, 56px); background: var(--b-bg-soft); }
   .sb-founder__grid { max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 80px); display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 72px; align-items: center; }
   .sb-founder__img { aspect-ratio: 3/4; overflow: hidden; }
   .sb-founder__img img { width: 100%; height: 100%; object-fit: cover; }
   .sb-founder__quote { font-size: clamp(22px, 2.4vw, 30px); font-style: italic; font-weight: 700; color: var(--b-ink); line-height: 1.45; margin: 0 0 28px; position: relative; padding-left: 30px; }
   .sb-founder__quote::before { content: '\201C'; position: absolute; left: -4px; top: -16px; font-size: 92px; line-height: 1; color: var(--b-primary); font-weight: 400; }
+  .sb-founder__body { position: relative; }
   .sb-founder__body p { font-size: 15px; line-height: 1.9; color: var(--b-ink-soft); margin: 0 0 18px; }
   .sb-founder__body p:last-child { margin-bottom: 0; }
+  .sb-founder__toggle { display: none; }
+  @media (max-width: 768px) {
+    .sb-founder__body { max-height: 8.1em; overflow: hidden; transition: max-height .35s ease; }
+    .sb-founder__body::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3.2em; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--b-bg-soft) 95%); pointer-events: none; }
+    .sb-founder__body.is-expanded { max-height: 2400px; }
+    .sb-founder__body.is-expanded::after { display: none; }
+    .sb-founder__toggle { display: inline-block; margin-top: 14px; padding: 4px 0; background: transparent; border: 0; border-bottom: 1px solid var(--b-ink); color: var(--b-ink); font: inherit; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+  }
   .sb-founder__eyebrow { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--b-primary); font-weight: 700; margin: 0 0 22px; }
   .sb-founder__signature { margin-top: 32px; font-style: italic; font-weight: 700; font-size: 20px; color: var(--b-ink); }
   .sb-founder__signature-role { display: block; font-style: normal; font-weight: 500; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--b-ink-faded); margin-top: 6px; }
@@ -3767,17 +3800,23 @@ first.parentNode.insertBefore(script, first);
   }
 
   /* ---------- Report box ---------- */
-  .sb-report { padding: clamp(72px, 9vw, 130px) 0; text-align: center; background: var(--b-bg); }
+  .sb-report { padding: clamp(40px, 4vw, 56px) 0 clamp(40px, 4vw, 56px); text-align: center; background: var(--b-bg); }
   .sb-report__inner { max-width: 1080px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 80px); }
   .sb-report__title { font-size: clamp(28px, 3.6vw, 42px); font-weight: 700; color: var(--b-ink); line-height: 1.2; letter-spacing: -0.01em; margin: 0 auto 32px; max-width: 880px; }
   .sb-report__cta { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--b-ink); border-bottom: 1px solid var(--b-ink); padding: 4px 0; transition: color .2s, border-color .2s; }
   .sb-report__cta:hover { color: var(--b-primary); border-bottom-color: var(--b-primary); }
 
   /* ---------- Explore more (horizontal carousel) ---------- */
-  .sb-explore { padding: clamp(48px, 6vw, 80px) 0 clamp(80px, 10vw, 140px); background: var(--b-bg); }
-  .sb-explore__head { max-width: 1590px; margin: 0 auto 36px; padding: 0 clamp(20px, 4vw, 80px); }
+  .sb-explore { padding: clamp(32px, 3vw, 48px) clamp(20px, 4vw, 80px) clamp(56px, 6vw, 88px); background: var(--b-bg); overflow: hidden; }
+  .sb-explore__head { max-width: 1590px; margin: 0 auto 36px; padding: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
   .sb-explore__title { font-size: clamp(28px, 3.6vw, 42px); font-weight: 700; color: var(--b-ink); margin: 0; letter-spacing: -0.01em; }
-  .sb-explore__scroller { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 0 clamp(20px, 4vw, 80px) 6px; scrollbar-width: none; }
+  .sb-explore__nav { display: flex; gap: 10px; flex-shrink: 0; }
+  .sb-explore__nav-btn { width: 42px; height: 42px; border-radius: 0; background: #fff; color: var(--b-ink); border: 1px solid var(--b-ink); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .25s ease, color .25s ease, border-color .25s ease; padding: 0; }
+  .sb-explore__nav-btn:hover { background: var(--b-ink); color: #fff; }
+  .sb-explore__nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .sb-explore__nav-btn:disabled:hover { background: #fff; color: var(--b-ink); }
+  .sb-explore__nav-btn svg { width: 16px; height: 16px; }
+  .sb-explore__scroller { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 0 0 6px; scrollbar-width: none; scroll-behavior: smooth; }
   .sb-explore__scroller::-webkit-scrollbar { display: none; }
   .sb-explore__card { flex: 0 0 22%; min-width: 240px; max-width: 360px; scroll-snap-align: start; text-decoration: none; color: inherit; }
   .sb-explore__media { position: relative; aspect-ratio: 4/5; overflow: hidden; }
@@ -3794,15 +3833,18 @@ first.parentNode.insertBefore(script, first);
 
 <div class="susos-brand">
 
-  <!-- 1. Hero -->
-  <section class="sb-hero" aria-label="Crafted with Purpose hero">
-    <div class="sb-hero__media">
-      <img src="assets/banner-1.jpg" alt="SUSOS premium bathroom collection" loading="eager">
+  <!-- 1. Hero (video + brand banner copy) -->
+  <section class="sb-banner sb-banner--hero" aria-label="Brand hero">
+    <div class="sb-banner__media">
+      <video autoplay loop muted playsinline preload="metadata" poster="assets/brand-hero.jpg" aria-hidden="true">
+        <source src="assets/brand-banner.mp4" type="video/mp4">
+      </video>
     </div>
-    <div class="sb-hero__overlay"></div>
-    <div class="sb-hero__copy">
-      <p class="sb-hero__breadcrumb"><a href="index.html">Our Commitment</a> /</p>
-      <h1 class="sb-hero__title">Crafted in Fujian. Engineered for the World.</h1>
+    <div class="sb-banner__intro">
+      <div class="sb-banner__inner">
+        <h1 class="sb-banner__text">Bathrooms, Considered.</h1>
+        <p class="sb-banner__sub">The room you wake up in and the one you wind down in — designed for the small, repeated moments that make a home feel like yours.</p>
+      </div>
     </div>
   </section>
 
@@ -3839,127 +3881,123 @@ first.parentNode.insertBefore(script, first);
     </div>
   </section>
 
-  <!-- 4. Case Study A — The Maker's Hand -->
-  <section class="sb-study" aria-label="The maker's hand">
-    <div class="sb-study__media"><img src="assets/factory/factory-2.webp" alt="SUSOS assembly hall in Xiamen" loading="lazy"></div>
-    <div class="sb-study__copy">
-      <p class="sb-study__eyebrow">Case Study · No. 01</p>
-      <h2 class="sb-study__title">The Maker's Hand</h2>
-      <div class="sb-study__body">
-        <p>SUSOS sanitary ware is born inside a 65,000-square-metre facility on the Xiamen coast. Each suite passes through the hands of at least four specialists — a brass machinist who programmes the cartridge, a ceramist who tunes the glaze, a setter who fits the soft-close mechanism, and a grader who signs off on a hundred-and-twelve point checklist.</p>
-        <p>The process cannot be rushed. A single intelligent toilet may take eighteen days to complete, including a 72-hour leak test and an accelerated thermal-cycling regime. Where competitors automate, we audit. It is the difference between a product that ships and one that lasts.</p>
+  <!-- 4-5. Case Study stack — second study scrolls over first -->
+  <div class="sb-study-stack">
+    <!-- Case Study A — The Maker's Hand -->
+    <section class="sb-study sb-study--sticky" aria-label="The maker's hand">
+      <div class="sb-study__media"><img src="assets/factory/factory-2.webp" alt="SUSOS assembly hall in Xiamen" loading="lazy"></div>
+      <div class="sb-study__copy">
+        <p class="sb-study__eyebrow">Case Study · No. 01</p>
+        <h2 class="sb-study__title">The Maker's Hand</h2>
+        <div class="sb-study__body">
+          <p>SUSOS sanitary ware is born inside a 65,000-square-metre facility on the Xiamen coast. Each suite passes through at least four hands — a brass machinist, a ceramist, a setter, and a grader who signs off on 112 checkpoints.</p>
+          <p>A single intelligent toilet takes eighteen days, including a 72-hour leak test. Where competitors automate, we audit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Case Study B — Standards we keep (scrolls over A) -->
+    <section class="sb-study sb-study--reverse sb-study--cover" aria-label="The standards we keep">
+      <div class="sb-study__media"><img src="assets/factory/factory-3.webp" alt="Inspection and certification" loading="lazy"></div>
+      <div class="sb-study__copy">
+        <p class="sb-study__eyebrow">Case Study · No. 02</p>
+        <h2 class="sb-study__title">The Standards We Keep</h2>
+        <div class="sb-study__body">
+          <p>ISO 9001:2015. ISO 14001. CE, WaterMark, cUPC, SASO. We publish container-ready specs for FOB Xiamen 20HQ and 40HQ, and quote within twelve business hours in two languages.</p>
+          <p>Our compliance file is open — test certificates, BOM, declaration of conformity, tooling photos. Trust is not a marketing claim; it is a stack of signed documents.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 7a. Quality & Certification marquee -->
+  <section class="nws-vendors">
+    <div class="nws-c">
+      <h2 class="nws-h2">Quality &amp; Certification</h2>
+      <div class="nws-h2-rule"></div>
+      <p class="nws-h2-sub">ISO 9001:2015 certified manufacturing — tested beyond European, North-American and Middle-Eastern standards · Trusted in 120+ countries</p>
+    </div>
+    <div class="nws-marquee">
+      <div class="nws-marquee-track">
+        <div class="nws-logo-card"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/good_gomes_logo.png?v=1776435823&width=330" alt="Good Homes" loading="lazy"></div>
+        <div class="nws-logo-card"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/ideal_home_logo.png?v=1776435810&width=330" alt="Ideal Home" loading="lazy"></div>
+        <div class="nws-logo-card"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/house_beautiful_logo.png?v=1776435812&width=330" alt="House Beautiful" loading="lazy"></div>
+        <div class="nws-logo-card"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/home_building_logo.png?v=1776435815&width=330" alt="Home Building" loading="lazy"></div>
+        <div class="nws-logo-card"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/real_homes_logo.png?v=1776435819&width=330" alt="Real Homes" loading="lazy"></div>
+        <div class="nws-logo-card" aria-hidden="true"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/good_gomes_logo.png?v=1776435823&width=330" alt="" loading="lazy"></div>
+        <div class="nws-logo-card" aria-hidden="true"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/ideal_home_logo.png?v=1776435810&width=330" alt="" loading="lazy"></div>
+        <div class="nws-logo-card" aria-hidden="true"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/house_beautiful_logo.png?v=1776435812&width=330" alt="" loading="lazy"></div>
+        <div class="nws-logo-card" aria-hidden="true"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/home_building_logo.png?v=1776435815&width=330" alt="" loading="lazy"></div>
+        <div class="nws-logo-card" aria-hidden="true"><img src="https://ukbathroomstore.co.uk/cdn/shop/files/real_homes_logo.png?v=1776435819&width=330" alt="" loading="lazy"></div>
       </div>
     </div>
   </section>
 
-  <!-- 5. Case Study B — Standards we keep -->
-  <section class="sb-study sb-study--reverse" aria-label="The standards we keep">
-    <div class="sb-study__media"><img src="assets/factory/factory-3.webp" alt="Inspection and certification" loading="lazy"></div>
-    <div class="sb-study__copy">
-      <p class="sb-study__eyebrow">Case Study · No. 02</p>
-      <h2 class="sb-study__title">The Standards We Keep</h2>
-      <div class="sb-study__body">
-        <p>SUSOS holds ISO 9001:2015 quality and ISO 14001 environmental certifications, with CE, WaterMark, cUPC and SASO marks across our principal export lines. We publish container-ready specifications for FOB Xiamen 20HQ and 40HQ — and quote within twelve business hours, in two languages, by a project team that has answered to architects, distributors and OEM brands in 120-plus countries.</p>
-        <p>Our compliance file is open. Buyers can request test certificates, BOM, declaration of conformity and tooling photographs at any stage. Trust is not a marketing claim; it is a stack of signed documents we keep on hand.</p>
+  <!-- 7c. Factory Strength + world map + 3 photos -->
+  <section class="susx-fs">
+    <div class="nws-c">
+      <h2 class="susx-fs__title">Factory Strength</h2>
+      <p class="susx-fs__sub"><b>·</b>Provide you with support and protection<b>·</b>Eliminate your worries</p>
+
+      <div class="susx-fs__header">
+        <div class="susx-fs__count" data-nws-stats>
+          <strong><span class="nws-stat-value" data-target="120">0</span>+</strong>
+          <span>Countries</span>
+        </div>
+        <div class="susx-fs__flags" aria-label="Markets served">
+          <span class="susx-flag" title="Germany" style="background:linear-gradient(180deg,#000 33%,#dd0000 33% 66%,#ffce00 66%)"></span>
+          <span class="susx-flag" title="UK" style="background:linear-gradient(135deg,#012169 0,#012169 40%,#fff 40% 50%,#c8102e 50% 60%,#fff 60% 70%,#012169 70%)"></span>
+          <span class="susx-flag" title="Italy" style="background:linear-gradient(90deg,#009246 33%,#fff 33% 66%,#ce2b37 66%)"></span>
+          <span class="susx-flag" title="France" style="background:linear-gradient(90deg,#0055a4 33%,#fff 33% 66%,#ef4135 66%)"></span>
+          <span class="susx-flag" title="Russia" style="background:linear-gradient(180deg,#fff 33%,#0033a0 33% 66%,#da291c 66%)"></span>
+          <span class="susx-flag susx-flag--jp" title="Japan"><i></i></span>
+          <span class="susx-flag" title="Spain" style="background:linear-gradient(180deg,#aa151b 25%,#f1bf00 25% 75%,#aa151b 75%)"></span>
+          <span class="susx-flag" title="Turkey" style="background:#e30a17"></span>
+          <span class="susx-flag" title="UAE" style="background:linear-gradient(180deg,#00732f 33%,#fff 33% 66%,#000 66%)"></span>
+          <span class="susx-flag" title="India" style="background:linear-gradient(180deg,#ff9933 33%,#fff 33% 66%,#138808 66%)"></span>
+        </div>
+      </div>
+
+      <div class="susx-fs__map">
+        <img src="assets/world-map.webp" alt="SUSOS global distribution — 120+ countries" loading="lazy">
+      </div>
+
+      <div class="susx-photos-3x2">
+        <div class="susx-photo" style="background-image:url('assets/factory/factory-1.webp')" role="img" aria-label="SUSOS factory floor"></div>
+        <div class="susx-photo" style="background-image:url('assets/factory/factory-2.webp')" role="img" aria-label="SUSOS production line"></div>
+        <div class="susx-photo" style="background-image:url('assets/factory/factory-3.webp')" role="img" aria-label="SUSOS facility"></div>
       </div>
     </div>
   </section>
 
-  <!-- 6. Banner moment -->
-  <section class="sb-banner" aria-label="Built to last a generation">
-    <div class="sb-banner__media"><img src="assets/scenes/scene-4.jpg" alt="Refined bath suite" loading="lazy"></div>
-    <div class="sb-banner__intro">
-      <h2 class="sb-banner__text">Considered ceramics. Engineered water. Made to outlast the renovation.</h2>
-    </div>
-  </section>
-
-  <!-- 7. Pillars -->
-  <section class="sb-pillars-section" aria-label="Three principles">
-    <div class="susos-brand__wrap">
-      <p class="sb-section__eyebrow">Three Principles</p>
-      <h2 class="sb-section__title">A House, Built On Three Disciplines.</h2>
-      <p class="sb-section__sub">Every decision SUSOS makes — from cartridge tolerance to packaging foam density — begins and ends with three commitments. They are the spine of our specification sheet and the soul of our work.</p>
-      <div class="sb-pillars">
-        <div class="sb-pillar">
-          <div class="sb-pillar__divider"></div>
-          <h3 class="sb-pillar__title">Provenance</h3>
-          <p class="sb-pillar__body">All ceramics are cast in our own Xiamen kilns; all brass cartridges are machined in-house. We do not outsource the moments that matter. The chain is short, the audit trail is intact, and the people who solve the problem are the people who built the part.</p>
-        </div>
-        <div class="sb-pillar">
-          <div class="sb-pillar__divider"></div>
-          <h3 class="sb-pillar__title">Engineering</h3>
-          <p class="sb-pillar__body">ISO 9001:2015. CE, cUPC, WaterMark, SASO. A 500,000-cycle test bench for ceramic discs. A 200-hour spray-jet test for chrome. We earn our certifications the slow way — by failing parts on the line so they don't fail in the field.</p>
-        </div>
-        <div class="sb-pillar">
-          <div class="sb-pillar__divider"></div>
-          <h3 class="sb-pillar__title">Endurance</h3>
-          <p class="sb-pillar__body">Lifetime warranty on cartridges. Ten years on ceramics. Five years on smart-toilet electronics, with firmware service we honour beyond. A SUSOS bathroom is a thirty-year commitment, sold with the paperwork to match.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Edits Carousel -->
-  <section class="sb-edits" aria-label="Curated edits">
-    <div class="sb-edits__bg">
-      <div class="sb-edits__bg-slide is-active" style="background-image:url('assets/scenes/scene-4.jpg')"></div>
-      <div class="sb-edits__bg-slide" style="background-image:url('assets/scenes/scene-5.webp')"></div>
-      <div class="sb-edits__bg-slide" style="background-image:url('assets/scenes/scene-6.jpg')"></div>
-    </div>
-    <div class="sb-edits__stage">
-      <div class="sb-edits__slide is-active">
-        <div class="sb-edits__panel">
-          <p class="sb-edits__panel-eyebrow">Edit · 01</p>
-          <h3 class="sb-edits__panel-title">The Intelligent Suite</h3>
-          <p class="sb-edits__panel-desc">Smart toilets, bidet seats and rimless wall-hung pans — engineered around silent flush, instant-warm water and twelve years of iterative firmware. MOQ from 30 units, FOB Xiamen.</p>
-          <a href="collection.html" class="sb-edits__panel-cta">Shop Smart Toilets</a>
-          <div class="sb-edits__nav">
-            <button class="sb-edits__nav-btn sb-edits__nav-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="sb-edits__nav-btn sb-edits__nav-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg></button>
+  <!-- 7b. About SUSOS + stats -->
+  <section class="nws-about">
+    <div class="nws-c">
+      <div class="nws-about-grid">
+        <div class="nws-about-text">
+          <h2>About SUSOS</h2>
+          <div class="nws-h2-rule"></div>
+          <h3>Where water vitality meets craftsmanship.</h3>
+          <p>SUSOS® is the bathroom brand of <strong>Fujian Tongtong Building Materials Co., Ltd</strong>, headquartered in Nan&rsquo;an — China&rsquo;s renowned &ldquo;Capital of Water Fittings&rdquo;. Our 50-million-RMB group runs four subsidiary companies and a precision plant across Fujian, Guangdong and Anxi, delivering taps, smart toilets, vanities, bathtubs and hardware to 120+ countries — including Thailand&rsquo;s <em>Siam Global House</em> and the United States&rsquo; <em>Home Depot</em>.</p>
+          <p>Every product is engineered with 58#/59# brass and 304 stainless steel cores, finished with our proprietary 10-step polishing and PVD plating process, and certified to <strong>ISO 9001:2015</strong> (Cert. No. 35624Q10017R0M). Brass-casting capacity reaches 200 tonnes per month — built around four pillars: healthy, human-centric, smart and affordable.</p>
+          <div class="nws-stats" data-nws-stats>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="50">0</span><span class="nws-stat-sx">M¥</span></div><div class="nws-stat-label">Registered Capital</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="200">0</span><span class="nws-stat-sx">t</span></div><div class="nws-stat-label">Monthly Brass Casting</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="4">0</span><span class="nws-stat-sx">×</span></div><div class="nws-stat-label">Production Bases</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="14">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Product Categories</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="10">0</span><span class="nws-stat-sx"></span></div><div class="nws-stat-label">Specialised Catalogs</div></div>
+            <div class="nws-stat"><div class="nws-stat-num"><span class="nws-stat-value" data-target="120">0</span><span class="nws-stat-sx">+</span></div><div class="nws-stat-label">Countries Served</div></div>
           </div>
-          <div class="sb-edits__progress"><div class="sb-edits__progress-bar"></div></div>
+          <a href="#contact" class="nws-btn nws-btn--solid nws-about-cta">Download Company Profile</a>
         </div>
-        <a href="collection.html" class="sb-edits__product">
-          <div class="sb-edits__product-img"><img src="assets/products/susos-toilet-3.png" alt="S-MLB-300D Premium Intelligent Toilet"></div>
-          <p class="sb-edits__product-name">S-MLB-300D Premium</p>
-          <p class="sb-edits__product-meta">MOQ 50 · Lead 30 days</p>
-        </a>
-      </div>
-      <div class="sb-edits__slide">
-        <div class="sb-edits__panel">
-          <p class="sb-edits__panel-eyebrow">Edit · 02</p>
-          <h3 class="sb-edits__panel-title">The Vanity Programme</h3>
-          <p class="sb-edits__panel-desc">Solid-wood and engineered-stone vanities in seven finishes, paired with our own ceramic basins. Custom widths from 600 to 1800 mm. Engineered for hospitality, sized for the home.</p>
-          <a href="index.html" class="sb-edits__panel-cta">Discover Vanities</a>
-          <div class="sb-edits__nav">
-            <button class="sb-edits__nav-btn sb-edits__nav-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="sb-edits__nav-btn sb-edits__nav-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg></button>
-          </div>
-          <div class="sb-edits__progress"><div class="sb-edits__progress-bar"></div></div>
+        <div class="nws-about-img">
+          <figure class="nws-about-photo nws-about-photo--top">
+            <img src="assets/nws-about.jpg" alt="SUSOS craftsmanship at the production base" loading="lazy">
+          </figure>
+          <figure class="nws-about-photo nws-about-photo--bot">
+            <img src="assets/nws-showroom.webp" alt="SUSOS showroom" loading="lazy">
+          </figure>
         </div>
-        <a href="index.html" class="sb-edits__product">
-          <div class="sb-edits__product-img"><img src="assets/products/susos-toilet-2.png" alt="SUSOS engineered vanity"></div>
-          <p class="sb-edits__product-name">Compact Vanity 800</p>
-          <p class="sb-edits__product-meta">MOQ 40 · Lead 35 days</p>
-        </a>
-      </div>
-      <div class="sb-edits__slide">
-        <div class="sb-edits__panel">
-          <p class="sb-edits__panel-eyebrow">Edit · 03</p>
-          <h3 class="sb-edits__panel-title">The Faucet & Shower Series</h3>
-          <p class="sb-edits__panel-desc">Brushed-nickel, matte-black and PVD-gold finishes over solid brass cores. Pressure-balanced cartridges rated to 500,000 cycles. Six finish families, one signature pour.</p>
-          <a href="index.html" class="sb-edits__panel-cta">Browse Faucets</a>
-          <div class="sb-edits__nav">
-            <button class="sb-edits__nav-btn sb-edits__nav-prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="sb-edits__nav-btn sb-edits__nav-next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg></button>
-          </div>
-          <div class="sb-edits__progress"><div class="sb-edits__progress-bar"></div></div>
-        </div>
-        <a href="index.html" class="sb-edits__product">
-          <div class="sb-edits__product-img"><img src="assets/products/susos-toilet-1.png" alt="SUSOS signature faucet"></div>
-          <p class="sb-edits__product-name">Signature Mixer Series</p>
-          <p class="sb-edits__product-meta">MOQ 100 · Lead 25 days</p>
-        </a>
       </div>
     </div>
   </section>
@@ -3971,11 +4009,12 @@ first.parentNode.insertBefore(script, first);
       <div class="sb-founder__text">
         <p class="sb-founder__eyebrow">A Letter From The Chairman</p>
         <p class="sb-founder__quote">We did not build SUSOS to be the cheapest factory in Fujian — we built it to be the one our customers' grandchildren still trust.</p>
-        <div class="sb-founder__body">
+        <div class="sb-founder__body" data-founder-body>
           <p>Fujian Tongtong Building Materials began with a small ceramics workshop on the outskirts of Xiamen. We were younger then, and the work was hard, and the imports from Italy and Germany set a bar we believed Chinese manufacturers should meet, not undercut. So we invested in CNC machinery before we needed it, in compliance certification before we could afford it, and in a multilingual project team because the people we wanted to serve were already speaking English, Spanish and Arabic.</p>
           <p>Today, SUSOS exports to 120 countries — from boutique hotels in Lisbon to social-housing programmes in Riyadh. The product mix has widened. The standards have not. Every order, regardless of size, is reviewed by a project manager with five years on the floor. Every tank we ship has been water-tested. Every box leaves Xiamen with the same packing list it had in our first year.</p>
           <p>This is the house we wanted to inherit when we were twenty-five — and the one we intend to leave behind. Welcome.</p>
         </div>
+        <button type="button" class="sb-founder__toggle" data-founder-toggle aria-expanded="false">Read more</button>
         <p class="sb-founder__signature">
           Lin Jianhua
           <span class="sb-founder__signature-role">Chairman · Fujian Tongtong Building Materials Co., Ltd</span>
@@ -3994,7 +4033,13 @@ first.parentNode.insertBefore(script, first);
 
   <!-- 11. Explore more -->
   <section class="sb-explore" aria-label="Explore more">
-    <div class="sb-explore__head"><h2 class="sb-explore__title">Explore More</h2></div>
+    <div class="sb-explore__head">
+      <h2 class="sb-explore__title">Explore More</h2>
+      <div class="sb-explore__nav">
+        <button type="button" class="sb-explore__nav-btn" data-explore-prev aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button type="button" class="sb-explore__nav-btn" data-explore-next aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
     <div class="sb-explore__scroller">
       <a href="collection.html" class="sb-explore__card">
         <div class="sb-explore__media"><img src="assets/collection/hero-toilets.jpg" alt="Smart toilets collection" loading="lazy"></div>
@@ -4028,6 +4073,17 @@ first.parentNode.insertBefore(script, first);
 <script>
 (function () {
   'use strict';
+
+  // ----- Hero stack offset: hero fills exactly one viewport beneath company banner + header -----
+  function syncStackOffset() {
+    var banner = document.querySelector('.company-banner');
+    var header = document.querySelector('#shopify-section-sections--23750034227548__header');
+    var h = (banner ? banner.offsetHeight : 0) + (header ? header.offsetHeight : 0);
+    document.documentElement.style.setProperty('--sb-stack-offset', h + 'px');
+  }
+  syncStackOffset();
+  window.addEventListener('load', syncStackOffset);
+  window.addEventListener('resize', syncStackOffset);
 
   // ----- Scroll-fill statement -----
   var statement = document.querySelector('.sb-statement__headline');
@@ -4066,6 +4122,72 @@ first.parentNode.insertBefore(script, first);
       window.addEventListener('resize', update);
       update();
     }
+  }
+
+  // ----- About stats counter -----
+  var statGroups = document.querySelectorAll('[data-nws-stats]');
+  if (statGroups.length) {
+    function animateStats(group) {
+      if (group.__nwsRan) return; group.__nwsRan = true;
+      group.querySelectorAll('.nws-stat-value').forEach(function (el) {
+        var target = parseInt(el.dataset.target, 10) || 0;
+        var duration = 1600;
+        var start = performance.now();
+        function tick(now) {
+          var p = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.floor(target * eased).toString();
+          if (p < 1) requestAnimationFrame(tick);
+          else el.textContent = target.toString();
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var sio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { animateStats(e.target); sio.unobserve(e.target); }
+        });
+      }, { threshold: 0.35 });
+      statGroups.forEach(function (g) { sio.observe(g); });
+    } else {
+      statGroups.forEach(animateStats);
+    }
+  }
+
+  // ----- Explore More carousel nav -----
+  var scroller = document.querySelector('.sb-explore__scroller');
+  var prevBtn = document.querySelector('[data-explore-prev]');
+  var nextBtn = document.querySelector('[data-explore-next]');
+  if (scroller && prevBtn && nextBtn) {
+    function scrollDistance() {
+      var card = scroller.querySelector('.sb-explore__card');
+      if (!card) return scroller.clientWidth * 0.7;
+      var style = window.getComputedStyle(scroller);
+      var gap = parseFloat(style.columnGap || style.gap || '20');
+      return card.getBoundingClientRect().width + gap;
+    }
+    function updateNavState() {
+      var max = scroller.scrollWidth - scroller.clientWidth - 1;
+      prevBtn.disabled = scroller.scrollLeft <= 0;
+      nextBtn.disabled = scroller.scrollLeft >= max;
+    }
+    prevBtn.addEventListener('click', function () { scroller.scrollBy({ left: -scrollDistance(), behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function () { scroller.scrollBy({ left: scrollDistance(), behavior: 'smooth' }); });
+    scroller.addEventListener('scroll', updateNavState, { passive: true });
+    window.addEventListener('resize', updateNavState);
+    updateNavState();
+  }
+
+  // ----- Founder read-more toggle (mobile) -----
+  var founderBody = document.querySelector('[data-founder-body]');
+  var founderToggle = document.querySelector('[data-founder-toggle]');
+  if (founderBody && founderToggle) {
+    founderToggle.addEventListener('click', function () {
+      var expanded = founderBody.classList.toggle('is-expanded');
+      founderToggle.textContent = expanded ? 'Read less' : 'Read more';
+      founderToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
   }
 
   // ----- Edits carousel -----
@@ -4370,7 +4492,7 @@ first.parentNode.insertBefore(script, first);
   }
 
   /* CERTIFICATIONS — horizontal marquee */
-  .nws-vendors{padding:96px 0;background:#f4f6f8;overflow:hidden}
+  .nws-vendors{padding:96px 0;background:#F6F6F3;overflow:hidden}
   .nws-marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
   .nws-marquee-track{display:flex;gap:24px;width:max-content;animation:nwsMarquee 35s linear infinite}
   @keyframes nwsMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -4452,7 +4574,7 @@ first.parentNode.insertBefore(script, first);
   }
 
   /* FACTORY STRENGTH + 120+ COUNTRIES */
-  .susx-fs{padding:96px 0;background:#f7f5f0;text-align:center;color:#1f4f4a;position:relative;overflow:hidden}
+  .susx-fs{padding:96px 0;background:#F6F6F3;text-align:center;color:#1f4f4a;position:relative;overflow:hidden}
   .susx-fs::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.3) 100%);pointer-events:none}
   .susx-fs>.nws-c{position:relative;z-index:1}
   .susx-fs__title{font-size:clamp(26px,2.6vw,38px);font-weight:800;letter-spacing:.02em;color:#1a1a1a;margin:0;line-height:1.1;text-transform:none}
